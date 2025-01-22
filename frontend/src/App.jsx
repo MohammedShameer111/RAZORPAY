@@ -10,7 +10,7 @@ const App = () => {
 
   useEffect(() => {
     // Get the backend URL from the environment variable
-    const apiUrl = process.env.REACT_APP_BACKEND_URL;
+    const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
     // Check if the apiUrl is defined
     if (!apiUrl) {
@@ -19,11 +19,22 @@ const App = () => {
     }
 
     // Fetch data from the backend API
-    fetch(`${apiUrl}/api/v1`)
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => setError(error));
-  }, []); 
+    fetch(`${apiUrl}/api/v1/getKey`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setData(data);
+        console.log('Data received:', data);
+      })
+      .catch((error) => {
+        setError(error);
+        console.error('Error fetching data:', error);
+      });
+  }, []);
 
   return (
     <Router>
