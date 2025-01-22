@@ -6,15 +6,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "build":"npm install",
-    "type":"module"
-    
+    "build": "echo 'No build step defined'" 
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
-  "type": "module",
+  "type": "module",  
   "dependencies": {
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
