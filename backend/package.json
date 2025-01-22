@@ -2,13 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "server.js",
-"scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "dev": "react-scripts start",
-  "build": "react-scripts build",
-  "start": "react-scripts start"
-},
-
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "build":"npm install"
+    
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
