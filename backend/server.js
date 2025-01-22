@@ -1,0 +1,19 @@
+import app from './app.js';
+import Razorpay from 'razorpay';
+import dotenv from 'dotenv';
+dotenv.config({path:"config/config.env"});
+
+
+const port=process.env.PORT || 3000
+
+export const instance=new Razorpay({
+  key_id:process.env.RAZORPAY_API_KEY,
+  key_secret:process.env.RAZORPAY_API_SECRET
+})
+
+
+
+app.listen(port,()=>{
+  console.log(`server running ${port}`);
+  
+})
