@@ -1,8 +1,8 @@
-import React from 'react';
-import '../styles/Products.css';
-import axios from 'axios'
-const Products = ({ product }) => {
+import axios from 'axios';
+import React from 'react'
+import '../styles/Products.css'
 
+function Product({product}) {
   const checkoutHandler=async(amount)=>{
     
     const {data:keyData}=await axios.get("/api/v1/getKey")
@@ -56,4 +56,5 @@ const Products = ({ product }) => {
   );
 };
 
-export default Products;
+
+export default Product

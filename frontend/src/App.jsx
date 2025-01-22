@@ -1,8 +1,10 @@
 import React from 'react'
-import Products from './components/products'
+
+
 import { productsData } from './components/Data'
 import {BrowserRouter as Router,Routes,Route, BrowserRouter} from 'react-router-dom'
 import PaymentSuccess from './components/PaymentSuccess'
+import Product from './components/Product'
 
 
 const App = () => {
@@ -10,7 +12,7 @@ const App = () => {
     <BrowserRouter>
  
     <Routes>
-      <Route path='/' element={<Products product={productsData}/>}/>
+    <Route path='/' element={<Product product={productsData}/>}/>
       <Route path='/paymentSuccess' element={<PaymentSuccess/>}/>
     </Routes>
 
