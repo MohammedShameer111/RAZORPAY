@@ -5,8 +5,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api/v1': {
-        target: 'https://razorpay-7.onrender.com',
+      '/api/': {
+        target: 'https://razorpay-7.onrender.com' ||'http://localhost:8000',
         changeOrigin: true,
         secure: false,
       },

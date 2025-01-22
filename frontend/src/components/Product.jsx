@@ -11,7 +11,7 @@ function Product({ product }) {
 
   const checkoutHandler = async (amount) => {
     try {
-      // ✅ Fetch Razorpay key from backend
+      // ✅ Fetch Razorpay key
       const { data: keyData } = await axios.get(`${API_BASE_URL}/api/v1/getKey`);
       const { key } = keyData;
       console.log("Razorpay Key:", key);
@@ -30,7 +30,7 @@ function Product({ product }) {
         order_id: order.id, // Order ID from backend
         callback_url: `${API_BASE_URL}/api/v1/paymentVerification`, // Payment verification URL
         prefill: {
-          name: 'sameer',
+          name: 'Sameer',
           email: 'mohamedshamir988@example.com',
           contact: '9361400343'
         },
@@ -39,7 +39,7 @@ function Product({ product }) {
         },
       };
 
-      const rzp = new window.Razorpay(options);
+      const rzp = new Razorpay(options);
       rzp.open();
     } catch (error) {
       console.error("Error during checkout:", error);

@@ -9,12 +9,17 @@ const App = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
+  // ✅ Automatically switch between local and production URLs
+  const API_BASE_URL = import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_API_BASE_URL
+    : import.meta.env.VITE_API_PROD_URL;
+
   useEffect(() => {
-    const apiUrl = 'https://razorpay-7.onrender.com/api/v1';
+    const apiUrl = `${API_BASE_URL}/api/v1/`;
 
     axios.get(apiUrl)
       .then((response) => {
-        setData(response.data); // ✅ Use `response.data` instead of `response.json()`
+        setData(response.data);
         console.log('Data received:', response.data);
       })
       .catch((error) => {
