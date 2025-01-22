@@ -19,7 +19,7 @@ const App = () => {
     }
 
     // Fetch data from the backend API
-    fetch(`${apiUrl}/api/v1/getKey`)
+    fetch(`${apiUrl}/api/v1`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
