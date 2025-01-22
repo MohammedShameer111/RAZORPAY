@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/products.css';
+import '../styles/Products.css';
 import axios from 'axios'
 const Products = ({ product }) => {
 

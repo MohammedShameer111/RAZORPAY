@@ -12,7 +12,11 @@ export const instance=new Razorpay({
 })
 
 
-
+const cors = require('cors');
+app.use(cors({
+  origin: 'https://your-frontend-url.onrender.com',
+  credentials: true,
+}));
 app.listen(port,()=>{
   console.log(`server running ${port}`);
   
