@@ -1,5 +1,5 @@
 import { instance } from '../server.js';
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 export const processPayment = async (req, res) => {
   try {
