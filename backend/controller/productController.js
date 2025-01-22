@@ -30,7 +30,6 @@ export const getKey = async (req, res) => {
     key: process.env.RAZORPAY_API_KEY,
   });
 };
-
 export const paymentVerification = async (req, res) => {
   try {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
@@ -42,14 +41,20 @@ export const paymentVerification = async (req, res) => {
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     
     const expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_API_SECRET) // Fixed algorithm
+      .createHmac("sha256", process.env.RAZORPAY_API_SECRET)
       .update(body)
       .digest("hex");
 
     const isAuthentic = expectedSignature === razorpay_signature;
 
+    // ✅ Dynamic frontend URL based on environment
+    const frontendURL =
+      process.env.NODE_ENV === "production"
+        ? "https://razorpay-5-96rl.onrender.com"
+        : "http://localhost:5173";
+
     if (isAuthentic) {
-      return res.redirect(`http://localhost:5173/paymentSuccess?reference=${razorpay_payment_id}`);
+      return res.redirect(`${frontendURL}/paymentSuccess?reference=${razorpay_payment_id}`);
     } else {
       res.status(400).json({
         success: false,
