@@ -1,40 +1,50 @@
-import axios from 'axios';
+
 import React from 'react'
 import '../styles/Products.css'
+import axios from 'axios';
 
-function Product({product}) {
-  const checkoutHandler=async(amount)=>{
-    
-    const {data:keyData}=await axios.get("/api/v1/getKey")
-    const {key}=keyData;
-    console.log(key);
 
-    const {data:orderData}=await axios.post("/api/v1/payment/process",{amount})
-    const {order}=orderData;
-    console.log(order);
-    
-    const options = {
-      key, // Replace with your Razorpay key_id
-      amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      currency: 'INR',
-      name: 'razorpay',
-      description: 'Test Transaction',
-      order_id:order.id, // This is the order_id created in the backend
-      callback_url:'/api/v1/paymentVerification', // Your success URL
-      prefill: {
-        name: 'sameer',
-        email: 'mohamedshamir988@example.com',
-        contact: '9361400343'
-      },
-      theme: {
-        color: '#F37254'
-      },
-    };
+function Product({ product }) {
+  const API_BASE_URL = import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_API_BASE_URL
+    : import.meta.env.VITE_API_PROD_URL;
 
-    const rzp = new Razorpay(options);
-    rzp.open();
+  const checkoutHandler = async (amount) => {
+    try {
+      // ✅ Fetch Razorpay key from backend
+      const { data: keyData } = await axios.get(`${API_BASE_URL}/api/v1/getKey`);
+      const { key } = keyData;
+      console.log("Razorpay Key:", key);
 
-  }
+      // ✅ Create payment order
+      const { data: orderData } = await axios.post(`${API_BASE_URL}/api/v1/payment/process`, { amount });
+      const { order } = orderData;
+      console.log("Order Data:", order);
+
+      const options = {
+        key, // Razorpay key
+        amount, // Amount in subunits (INR 500 = 50000 paise)
+        currency: 'INR',
+        name: 'razorpay',
+        description: 'Test Transaction',
+        order_id: order.id, // Order ID from backend
+        callback_url: `${API_BASE_URL}/api/v1/paymentVerification`, // Payment verification URL
+        prefill: {
+          name: 'sameer',
+          email: 'mohamedshamir988@example.com',
+          contact: '9361400343'
+        },
+        theme: {
+          color: '#F37254'
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
+  };
  
   
   return (

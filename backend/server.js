@@ -36,6 +36,10 @@ app.use(cors({
 app.get('/api/v1', (req, res) => {
   res.json({ message: 'API is working!' });
 });
+app.get('/api/v1/getKey', (req, res) => {
+  res.json({ key: process.env.RAZORPAY_API_KEY });
+});
+
 
 // Start the server
 app.listen(port, () => {
