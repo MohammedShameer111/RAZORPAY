@@ -34,7 +34,7 @@ app.use(
     },
     credentials: true, // ✅ Allow credentials (cookies, auth headers)
     methods: ["GET", "POST", "PUT", "DELETE"], // ✅ Allow HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // ✅ Allow specific headers
+    //allowedHeaders: ["Content-Type", "Authorization"], // ✅ Allow specific headers
   })
 );
 
