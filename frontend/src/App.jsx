@@ -35,7 +35,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Product product={productsData} />} />
         <Route path="/paymentSuccess" element={<PaymentSuccess />} />
-        <Route path="https://razorpay-7.onrender.com//paymentSuccess" element={<PaymentSuccess />} />
       </Routes>
       {/* {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>} */}
     </Router>
