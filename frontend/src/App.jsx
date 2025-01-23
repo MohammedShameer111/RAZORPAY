@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import { HashRouter  as Router, Routes, Route } from 'react-router-dom';
 import { productsData } from './components/Data';
 import PaymentSuccess from './components/PaymentSuccess';
 import Product from './components/Product';
-import axios from 'axios';
 
 const App = () => {
 //   const [data, setData] = useState([]);
