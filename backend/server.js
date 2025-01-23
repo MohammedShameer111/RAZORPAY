@@ -51,6 +51,7 @@ app.get("/", (req, res) => {
   res.json({ message: "API is working!" });
 });
 
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
