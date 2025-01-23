@@ -51,7 +51,7 @@ export const paymentVerification = async (req, res) => {
     const frontendURL =
       process.env.NODE_ENV === "production"
         ? "https://razorpay-5-96rl.onrender.com"
-        : "http://localhost:5173";
+        : process.env.FRONTEND_URL || "http://localhost:5173";
 
     if (isAuthentic) {
       console.log("Redirecting to:", `${frontendURL}/paymentSuccess?reference=${razorpay_payment_id}`);
