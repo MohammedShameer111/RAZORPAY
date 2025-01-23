@@ -50,7 +50,7 @@ export const paymentVerification = async (req, res) => {
     // ✅ Dynamic frontend URL based on environment
     const frontendURL =
       process.env.NODE_ENV === "production"
-        ? "https://razorpay-5-96rl.onrender.com"
+        ? "https://razorpay-7.onrender.com"
         : process.env.FRONTEND_URL || "http://localhost:5173";
 
     if (isAuthentic) {
