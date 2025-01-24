@@ -9,51 +9,42 @@ function Product({ product }) {
     ? import.meta.env.VITE_API_BASE_URL
     : import.meta.env.VITE_API_PROD_URL;
 
-    const checkoutHandler = async (amount) => {
-      try {
-        // ✅ Fetch Razorpay key
-        const { data: keyData } = await axios.get(`${API_BASE_URL}/api/v1/getKey`);
-        const { key } = keyData;
-    
-        // ✅ Create payment order
-        const { data: orderData } = await axios.post(`${API_BASE_URL}/api/v1/payment/process`, { amount });
-        const { order } = orderData;
-    
-        const options = {
-          key, 
-          amount, 
-          currency: 'INR',
-          name: 'razorpay',
-          description: 'Test Transaction',
-          order_id: order.id,
-          handler: async function (response) {
-            // ✅ Send payment details to backend for verification
-            const { data } = await axios.post(`${API_BASE_URL}/api/v1/paymentVerification`, response);
-    
-            if (data.success) {
-              // ✅ Redirect user after successful verification
-              window.location.href = data.redirectURL;
-            } else {
-              alert("Payment verification failed!");
-            }
-          },
-          prefill: {
-            name: 'Sameer',
-            email: 'mohamedshamir988@example.com',
-            contact: '9361400343'
-          },
-          theme: {
-            color: '#F37254'
-          },
-        };
-    
-        const rzp = new Razorpay(options);
-        rzp.open();
-      } catch (error) {
-        console.error("Error during checkout:", error);
-      }
-    };
-    
+  const checkoutHandler = async (amount) => {
+    try {
+      // ✅ Fetch Razorpay key
+      const { data: keyData } = await axios.get(`${API_BASE_URL}/api/v1/getKey`);
+      const { key } = keyData;
+      console.log("Razorpay Key:", key);
+
+      // ✅ Create payment order
+      const { data: orderData } = await axios.post(`${API_BASE_URL}/api/v1/payment/process`, { amount });
+      const { order } = orderData;
+      console.log("Order Data:", order);
+
+      const options = {
+        key, // Razorpay key
+        amount, // Amount in subunits (INR 500 = 50000 paise)
+        currency: 'INR',
+        name: 'razorpay',
+        description: 'Test Transaction',
+        order_id: order.id, // Order ID from backend
+        callback_url: `${API_BASE_URL}/api/v1/paymentVerification`, // Payment verification URL
+        prefill: {
+          name: 'Sameer',
+          email: 'mohamedshamir988@example.com',
+          contact: '9361400343'
+        },
+        theme: {
+          color: '#F37254'
+        },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
+  };
  
   
   return (
