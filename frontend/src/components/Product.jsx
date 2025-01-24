@@ -6,8 +6,8 @@ import axios from 'axios';
 
 function Product({ product }) {
   const API_BASE_URL = import.meta.env.MODE === "development"
-    ? import.meta.env.VITE_API_BASE_URL
-    : import.meta.env.VITE_API_BASE_URL;
+    ? "http://localhost:4000"
+    : "https://razorpay-7.onrender.com";
 
   const checkoutHandler = async (amount) => {
     try {
