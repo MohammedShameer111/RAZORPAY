@@ -1,13 +1,30 @@
-
-import React from 'react'
-import '../styles/Products.css'
+import React, { useEffect, useState } from 'react';
+import '../styles/Products.css';
 import axios from 'axios';
-
+import { useLocation } from 'react-router-dom';
 
 function Product({ product }) {
   const API_BASE_URL = import.meta.env.MODE === "development"
     ? "http://localhost:4000"
     : "https://razorpay-7.onrender.com";
+
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const paymentSuccess = query.get("paymentSuccess");
+  const reference = query.get("reference");
+
+  // State to manage success message visibility
+  const [showMessage, setShowMessage] = useState(paymentSuccess);
+
+  useEffect(() => {
+    if (paymentSuccess) {
+      // Hide message after 5 seconds
+      setTimeout(() => {
+        setShowMessage(false);
+        window.history.replaceState(null, "", "/"); // Remove query params from URL
+      }, 5000);
+    }
+  }, [paymentSuccess]);
 
   const checkoutHandler = async (amount) => {
     try {
@@ -23,7 +40,7 @@ function Product({ product }) {
 
       const options = {
         key, // Razorpay key
-        amount, // Amount in subunits (INR 500 = 50000 paise)
+        amount: amount * 100, // Convert amount to paise (₹500 = 50000 paise)
         currency: 'INR',
         name: 'razorpay',
         description: 'Test Transaction',
@@ -45,26 +62,30 @@ function Product({ product }) {
       console.error("Error during checkout:", error);
     }
   };
- 
-  
+
   return (
     <div className='logo'>
-    <img src="../images/razor-logo.svg" alt="" />
+      <img src="../images/razor-logo.svg" alt="Razorpay Logo" />
 
-    <div className='products-container'>
-   
-      {product.map((item) => (
-        <div className="product-card" key={item.id}> {/* Add a unique key */}
-          <img className='product-image' src={item.image} alt={item.title} />
-          <h3 className="product-title">{item.title}</h3>
-          <p className="product-price">Price <strong>{item.price}</strong>/-</p>
-          <button onClick={()=>checkoutHandler(item.price)} className="pay-button">Pay</button>
+      {/* ✅ Show success message if payment was successful */}
+      {showMessage && (
+        <div className="payment-success-message">
+          <p>🎉 Payment Successful! Reference ID: <strong>{reference}</strong></p>
         </div>
-      ))}
-    </div>
+      )}
+
+      <div className='products-container'>
+        {product.map((item) => (
+          <div className="product-card" key={item.id}>
+            <img className='product-image' src={item.image} alt={item.title} />
+            <h3 className="product-title">{item.title}</h3>
+            <p className="product-price">Price <strong>{item.price}</strong>/-</p>
+            <button onClick={() => checkoutHandler(item.price)} className="pay-button">Pay</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
-};
+}
 
-
-export default Product
+export default Product;

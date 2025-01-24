@@ -47,16 +47,16 @@ export const paymentVerification = async (req, res) => {
 
     const isAuthentic = expectedSignature === razorpay_signature;
 
-    // ✅ Dynamic frontend URL based on environment
+    // ✅ Dynamic frontend URL
     const frontendURL =
       process.env.NODE_ENV === "production"
         ? "https://razorpay-5-96rl.onrender.com"
-        :   "http://localhost:5173";
+        : "http://localhost:5173";
 
     if (isAuthentic) {
-      console.log("Redirecting to:", `${frontendURL}/paymentSuccess?reference=${razorpay_payment_id}`);
+      console.log("Redirecting to:", `${frontendURL}/?paymentSuccess=true&reference=${razorpay_payment_id}`);
 
-      return res.redirect(`${frontendURL}/paymentSuccess?reference=${razorpay_payment_id}`);
+      return res.redirect(`${frontendURL}/?paymentSuccess=true&reference=${razorpay_payment_id}`);
       
     } else {
       res.status(400).json({
