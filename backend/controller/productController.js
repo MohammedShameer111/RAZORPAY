@@ -54,9 +54,11 @@ export const paymentVerification = async (req, res) => {
         :   "http://localhost:5173";
 
     if (isAuthentic) {
-      console.log("Redirecting to:", `${frontendURL}/paymentSuccess?reference=${razorpay_payment_id}`);
-
-      return res.redirect(`https://razorpay-5-96rl.onrender.com/paymentSuccess?reference=${razorpay_payment_id}`);
+      res.json({
+        success: true,
+        redirectURL: `${frontendURL}/paymentSuccess?reference=${razorpay_payment_id}`,
+      });
+      
       
     } else {
       res.status(400).json({

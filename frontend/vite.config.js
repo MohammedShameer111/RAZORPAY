@@ -6,7 +6,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api/': {
-        target: 'https://razorpay-7.onrender.com' ||'http://localhost:4000',
+        target: process.env.NODE_ENV === 'production'
+          ? 'https://razorpay-7.onrender.com'
+          : 'http://localhost:4000', // Use localhost in development
         changeOrigin: true,
         secure: false,
       },
