@@ -4,45 +4,36 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
 function Product({ product }) {
+  const [successMessage, setSuccessMessage] = useState('');
+  const location = useLocation();
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    if (query.get("payment") === "success") {
+      setSuccessMessage("✅ Payment was successful!");
+      setTimeout(() => setSuccessMessage(''), 5000); // Hide message after 5 seconds
+    }
+  }, [location.search]);
+
   const API_BASE_URL = import.meta.env.MODE === "development"
     ? "http://localhost:4000"
     : "https://razorpay-7.onrender.com";
-
-  const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const paymentSuccess = query.get("paymentSuccess");
-  const reference = query.get("reference");
-
-  // State to manage success message visibility
-  const [showMessage, setShowMessage] = useState(paymentSuccess);
-
-  useEffect(() => {
-    if (paymentSuccess) {
-      // Hide message after 5 seconds
-      setTimeout(() => {
-        setShowMessage(false);
-        window.history.replaceState(null, "", "/"); // Remove query params from URL
-      }, 5000);
-    }
-  }, [paymentSuccess]);
 
   const checkoutHandler = async (amount) => {
     try {
       // ✅ Fetch Razorpay key
       const { data: keyData } = await axios.get(`${API_BASE_URL}/api/v1/getKey`);
       const { key } = keyData;
-      console.log("Razorpay Key:", key);
 
       // ✅ Create payment order
       const { data: orderData } = await axios.post(`${API_BASE_URL}/api/v1/payment/process`, { amount });
       const { order } = orderData;
-      console.log("Order Data:", order);
 
       const options = {
         key, // Razorpay key
-        amount: amount * 100, // Convert amount to paise (₹500 = 50000 paise)
+        amount, // Amount in subunits (INR 500 = 50000 paise)
         currency: 'INR',
-        name: 'razorpay',
+        name: 'Razorpay',
         description: 'Test Transaction',
         order_id: order.id, // Order ID from backend
         callback_url: `${API_BASE_URL}/api/v1/paymentVerification`, // Payment verification URL
@@ -65,14 +56,9 @@ function Product({ product }) {
 
   return (
     <div className='logo'>
-      <img src="../images/razor-logo.svg" alt="Razorpay Logo" />
+      <img src="../images/razor-logo.svg" alt="" />
 
-      {/* ✅ Show success message if payment was successful */}
-      {showMessage && (
-        <div className="payment-success-message">
-          <p>🎉 Payment Successful! Reference ID: <strong>{reference}</strong></p>
-        </div>
-      )}
+      {successMessage && <p className="success-message">{successMessage}</p>} {/* ✅ Success Message */}
 
       <div className='products-container'>
         {product.map((item) => (
