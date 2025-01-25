@@ -21,30 +21,26 @@ function Product({ product }) {
 
   const checkoutHandler = async (amount) => {
     try {
-      // ✅ Fetch Razorpay key
       const { data: keyData } = await axios.get(`${API_BASE_URL}/api/v1/getKey`);
       const { key } = keyData;
 
-      // ✅ Create payment order
       const { data: orderData } = await axios.post(`${API_BASE_URL}/api/v1/payment/process`, { amount });
       const { order } = orderData;
 
       const options = {
-        key, // Razorpay key
-        amount, // Amount in subunits (INR 500 = 50000 paise)
+        key,
+        amount,
         currency: 'INR',
         name: 'Razorpay',
         description: 'Test Transaction',
-        order_id: order.id, // Order ID from backend
-        callback_url: `${API_BASE_URL}/api/v1/paymentVerification`, // Payment verification URL
+        order_id: order.id,
+        callback_url: `${API_BASE_URL}/api/v1/paymentVerification`, 
         prefill: {
           name: 'Sameer',
           email: 'mohamedshamir988@example.com',
           contact: '9361400343'
         },
-        theme: {
-          color: '#F37254'
-        },
+        theme: { color: '#F37254' },
       };
 
       const rzp = new Razorpay(options);
@@ -58,7 +54,7 @@ function Product({ product }) {
     <div className='logo'>
       <img src="../images/razor-logo.svg" alt="" />
 
-      {successMessage && <p className="success-message">{successMessage}</p>} {/* ✅ Success Message */}
+      {successMessage && <p className="success-message">{successMessage}</p>} {/* ✅ Show Success Message */}
 
       <div className='products-container'>
         {product.map((item) => (

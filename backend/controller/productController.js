@@ -30,7 +30,6 @@ export const getKey = async (req, res) => {
     key: process.env.RAZORPAY_API_KEY,
   });
 };
-
 export const paymentVerification = async (req, res) => {
   try {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
@@ -48,6 +47,7 @@ export const paymentVerification = async (req, res) => {
 
     const isAuthentic = expectedSignature === razorpay_signature;
 
+    // ✅ Correct frontend URL
     const frontendURL =
       process.env.NODE_ENV === "production"
         ? "https://razorpay-5-96rl.onrender.com"
@@ -56,6 +56,7 @@ export const paymentVerification = async (req, res) => {
     if (isAuthentic) {
       console.log("Redirecting to:", `${frontendURL}/?payment=success`);
 
+      // ✅ Redirect to the **home page (`/`)** with `?payment=success`
       return res.redirect(`${frontendURL}/?payment=success`);
     } else {
       res.status(400).json({
