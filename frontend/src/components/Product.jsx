@@ -23,9 +23,13 @@ function Product({ product }) {
     try {
       const { data: keyData } = await axios.get(`${API_BASE_URL}/api/v1/getKey`);
       const { key } = keyData;
+      console.log(key);
+      
 
       const { data: orderData } = await axios.post(`${API_BASE_URL}/api/v1/payment/process`, { amount });
       const { order } = orderData;
+      console.log(order);
+      
 
       const options = {
         key,
@@ -54,9 +58,11 @@ function Product({ product }) {
     <div className='logo'>
       <img src="../images/razor-logo.svg" alt="" />
 
-      {successMessage && <p className="success-message">{successMessage}</p>} {/* ✅ Show Success Message */}
+     
 
       <div className='products-container'>
+
+      {successMessage && <p className="success-message">{successMessage}{key}</p>} {/* ✅ Show Success Message */}
         {product.map((item) => (
           <div className="product-card" key={item.id}>
             <img className='product-image' src={item.image} alt={item.title} />
