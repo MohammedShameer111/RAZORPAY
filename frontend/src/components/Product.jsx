@@ -23,9 +23,13 @@ function Product({ product }) {
     try {
       const { data: keyData } = await axios.get(`${API_BASE_URL}/api/v1/getKey`);
       const { key } = keyData;
+      console.log(key);
+      
 
       const { data: orderData } = await axios.post(`${API_BASE_URL}/api/v1/payment/process`, { amount });
       const { order } = orderData;
+      console.log(order);
+      
 
       const options = {
         key,
@@ -51,20 +55,19 @@ function Product({ product }) {
   };
 
   return (
-    <div className="products-wrapper">
-      {/* ✅ Razorpay logo centered at the top */}
-      <div className="razorpay-logo-container">
-        <img className="razorpay-logo" src="../images/razor-logo.svg" alt="Razorpay Logo" />
-      </div>
+    <div className='logo'>
+      <img src="../images/razor-logo.svg" alt="" />
 
-      {/* ✅ Success message centered below the logo */}
-      {successMessage && <p className="success-message">{successMessage}</p>}
+     <div className='success'>
+     {successMessage && <p className="success-message">{successMessage}</p>} {/* ✅ Show Success Message */}
+     </div>
 
-      {/* ✅ Products list */}
-      <div className="products-container">
+      <div className='products-container'>
+
+     
         {product.map((item) => (
           <div className="product-card" key={item.id}>
-            <img className="product-image" src={item.image} alt={item.title} />
+            <img className='product-image' src={item.image} alt={item.title} />
             <h3 className="product-title">{item.title}</h3>
             <p className="product-price">Price <strong>{item.price}</strong>/-</p>
             <button onClick={() => checkoutHandler(item.price)} className="pay-button">Pay</button>
