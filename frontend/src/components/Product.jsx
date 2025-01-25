@@ -62,7 +62,7 @@ function Product({ product }) {
 
       <div className='products-container'>
 
-      {successMessage && <p className="success-message">{successMessage}{key}</p>} {/* ✅ Show Success Message */}
+      {successMessage && <p className="success-message">{successMessage}</p>} {/* ✅ Show Success Message */}
         {product.map((item) => (
           <div className="product-card" key={item.id}>
             <img className='product-image' src={item.image} alt={item.title} />
